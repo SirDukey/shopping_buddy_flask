@@ -151,7 +151,9 @@ def add_recipe_to_grocery_list(recipe_id):
         if any(result):
             for row in result:
                 if row.product_id == int(product_id):
+                    product_price = db.get_or_404(Product, int(product_id)).price
                     row.quantity += int(quantity)
+                    row.subtotal = row.quantity * product_price
                     db.session.commit()
                     product = db.get_or_404(Product, int(product_id))
                     products_added.append(product.name)
