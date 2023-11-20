@@ -1,8 +1,5 @@
-from __main__ import app
-from flask_sqlalchemy import SQLAlchemy
+from extensions import db
 from sqlalchemy import func
-
-db = SQLAlchemy(app)
 
 
 class Product(db.Model):
