@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{ url_for('recipes') }}
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Button trigger modal for adding a recipe -->
+<button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addRecipeModal">
+  + recipe
+</button>
+
+
+<!-- Modal popup for adding recipe information -->
+<div class="modal fade" id="addRecipeModal" tabindex="-1" aria-labelledby="addRecipeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="{{ url_for('add_recipe')}}" method="POST">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="addRecipeModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <table class="table table-striped-columns">
+            <tr>
+                <td>Name</td><td><input class="form-control" type="text" name="name" value=""></td>
+            </tr>
+
+            <tr>
+              <td>Products</td>
+
+              <td>
+                <ul class="list-group">
+                  {% for product in products %}
+                    <li class="list-group-item">
+                        <div class="container text-center">
+                          <div class="row">
+                            <div class="col">
+                              {{ product.name }}
+                            </div>
+                              <div class="col">
+                                <input class="form-control" type="number" name="quantity_{{ product.id }}" value="0" style="width: 50%" min="0">
+                              </div>
+                          </div>
+                        </div>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </td>
+            </tr>
+
+              <tr>
+                  <td>Description</td>
+                  <td>
+                      <div class="input-group">
+                          <textarea class="form-control" name="description" aria-label="With textarea"></textarea>
+                      </div>
+                  </td>
+              </tr>
+
+          </table>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-save-fill"></i></button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% for recipe in recipes %}
+
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">{{ recipe.name }}</h5>
+      <p class="card-text">{{ recipe.description }}</p>
+
+
+      <!-- Button for recipe information -->
+      <div class="btn-group" role="group">
+      <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#recipeModal{{ recipe.id }}"><i class="bi bi-info"></i></button>
+
+        <!-- Button to add recipe products to grocery list -->
+      <form action="{{ url_for('add_recipe_to_grocery_list', recipe_id=recipe.id)}}" method="POST">
+        <button class="btn btn-success btn-sm">+ <i class="bi bi-cart3"></i></button>
+      </form>
+      </div>
+
+      <!-- Modal popup for updating recipe information -->
+      <div class="modal fade" id="recipeModal{{ recipe.id }}" tabindex="-1" aria-labelledby="recipeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <form action="{{ url_for('update_recipe', recipe_id=recipe.id)}}" method="POST">
+
+              <div class="modal-header">
+                <h5 class="modal-title" id="recipeModalLabel">{{ recipe.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+
+              <div class="modal-body">
+                <table class="table table-striped-columns">
+
+                  <tr>
+                    <td>Name</td><td><input class="form-control" type="text" name="recipe_name" value="{{ recipe.name }}"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Products</td>
+
+                    <td>
+                      <ul class="list-group">
+                        {% for product in products %}
+                          <li class="list-group-item">
+                            <div class="container text-center">
+                              <div class="row">
+                                <div class="col">
+                                  {{ product.name }}
+                                </div>
+                                <div class="col">
+                                  <input class="form-control" type="number" name="quantity_{{ product.id }}" value="{{ get_product_quantity(recipe.products, product.id) }}" style="width: 50%" min="1">
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Description</td>
+                    <td>
+                        <div class="input-group">
+                            <textarea class="form-control" name="recipe_description" aria-label="With textarea">{{ recipe.description }}</textarea>
+                        </div>
+                    </td>
+                  </tr>
+
+
+
+
+                </table>
+              </div>
+
+              <div class="modal-footer">
+
+                <button type="submit" class="btn btn-danger btn" value="Delete" name="delete_recipe"><i class="bi bi-trash-fill"></i></button>
+                <button type="submit" class="btn btn-primary btn"><i class="bi bi-save-fill"></i></button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+</div>
+{% endfor %}
+{% endblock %}

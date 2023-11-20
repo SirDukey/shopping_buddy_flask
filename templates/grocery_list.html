@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{ url_for('grocery_list') }}
+{% endblock %}
+
+
+{% block content %}
+
+<table class="table">
+
+  <th></th>
+  <th>Name</th>
+  <th>Store</th>
+  <th>Quantity</th>
+  <th>Price</th>
+  <th>Subtotal</th>
+
+    {% for product_name, product_data in products_with_quantities.items() %}
+        <tr>
+          <td>
+            <form action="{{ url_for('remove_product_from_grocery_list')}}" method="POST">
+              <button class="btn btn-danger btn-sm" type="submit" name="product_id" value="{{ product_data['id'] }}">-</button>
+            </form>
+          </td>
+          <td>{{ product_name }}</td>
+
+          <td>{{ product_data['store'] }}</td>
+
+          <td>
+            <form action="{{ url_for('update_grocery_list_quantity', product_id=product_data['id']) }}" method="POST">
+              <div class="input-group input-group-sm" style="width: 50%">
+
+                <button class="btn btn-outline-danger" name="decrease" value="-1">-</button>
+                <input type="text" readonly style="text-align: center" class="form-control input-number" id="floatingInput"  value="{{ product_data['quantity'] }}">
+                <button class="btn btn-outline-success" name="increase" value="+1">+</button>
+
+              </div>
+            </form>
+          </td>
+
+          <td>{{ product_data['price'] }}</td>
+          <td>{{ product_data['subtotal'] }}</td>
+
+        </tr>
+    {% endfor %}
+</table>
+
+<nav class="navbar fixed-bottom bg-body-tertiary ">
+  <div class="container-fluid">
+    <a class="navbar-brand position-absolute bottom-0 end-0" href="#">Total amount:  <i class="bi bi-currency-euro"></i>{{ total }}</a>
+  </div>
+</nav>
+{% endblock %}
