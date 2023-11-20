@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-  {{ url_for('recipes') }}
+  {{ url_for('main.recipes') }}
 {% endblock %}
 
 
@@ -17,7 +17,7 @@
 <div class="modal fade" id="addRecipeModal" tabindex="-1" aria-labelledby="addRecipeModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="{{ url_for('add_recipe')}}" method="POST">
+      <form action="{{ url_for('main.add_recipe')}}" method="POST">
 
         <div class="modal-header">
           <h5 class="modal-title" id="addRecipeModalLabel"></h5>
@@ -89,7 +89,7 @@
       <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#recipeModal{{ recipe.id }}"><i class="bi bi-info"></i></button>
 
         <!-- Button to add recipe products to grocery list -->
-      <form action="{{ url_for('add_recipe_to_grocery_list', recipe_id=recipe.id)}}" method="POST">
+      <form action="{{ url_for('main.add_recipe_to_grocery_list', recipe_id=recipe.id)}}" method="POST">
         <button class="btn btn-success btn-sm">+ <i class="bi bi-cart3"></i></button>
       </form>
       </div>
@@ -99,7 +99,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
 
-            <form action="{{ url_for('update_recipe', recipe_id=recipe.id)}}" method="POST">
+            <form action="{{ url_for('main.update_recipe', recipe_id=recipe.id)}}" method="POST">
 
               <div class="modal-header">
                 <h5 class="modal-title" id="recipeModalLabel">{{ recipe.name }}</h5>

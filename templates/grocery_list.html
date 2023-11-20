@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-  {{ url_for('grocery_list') }}
+  {{ url_for('main.grocery_list') }}
 {% endblock %}
 
 
@@ -19,7 +19,7 @@
     {% for product_name, product_data in products_with_quantities.items() %}
         <tr>
           <td>
-            <form action="{{ url_for('remove_product_from_grocery_list')}}" method="POST">
+            <form action="{{ url_for('main.remove_product_from_grocery_list')}}" method="POST">
               <button class="btn btn-danger btn-sm" type="submit" name="product_id" value="{{ product_data['id'] }}">-</button>
             </form>
           </td>
@@ -28,7 +28,7 @@
           <td>{{ product_data['store'] }}</td>
 
           <td>
-            <form action="{{ url_for('update_grocery_list_quantity', product_id=product_data['id']) }}" method="POST">
+            <form action="{{ url_for('main.update_grocery_list_quantity', product_id=product_data['id']) }}" method="POST">
               <div class="input-group input-group-sm" style="width: 50%">
 
                 <button class="btn btn-outline-danger" name="decrease" value="-1">-</button>
