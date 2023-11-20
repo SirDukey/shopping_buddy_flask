@@ -22,4 +22,8 @@ def create_app(database_uri=DATABASE_URI):
     db.init_app(app)
 
     app.register_blueprint(main)
+
+    with app.app_context():
+        db.create_all()
+
     return app
