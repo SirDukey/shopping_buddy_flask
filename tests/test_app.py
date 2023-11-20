@@ -7,7 +7,6 @@ def test_index(client):
 
 
 def test_product(client, app):
-
     with app.app_context():
         # Add product
         response = client.post('/products/add', data={'name': 'product_A', 'gluten': '', 'price': ''})
@@ -60,6 +59,24 @@ def test_recipe(client, app):
 
 
 def test_grocery(client, app):
+    """
+    This will test the grocery list api calls
+
+    1. Add a product to the product list
+    2. Add the product to the grocery list
+    3. Create a recipe with a product
+    4. Add the recipe to the grocery list, the quantity should sum with the product already in the grocery list and the
+       subtotal should calculate accordingly
+    5. Adjust the quantity of the grocery list, the subtotal should calculate
+    6. Remove the product from the grocery list
+
+    Args:
+        client: fixture
+        app: fixture
+
+    Returns:
+
+    """
     with app.app_context():
         # Add product
         client.post('/products/add', data={'name': 'product_A', 'gluten': '', 'price': 1})
