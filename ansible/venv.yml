@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+    - name: Create Python virtual environment
+      command:
+        cmd: python3 -m venv /home/ubuntu/shopping_buddy_flask/venv
+        creates: "/home/ubuntu/shopping_buddy_flask/venv"
+
+    - name: Install Packages from a Requirements File
+      ansible.builtin.pip:
+        virtualenv: /home/ubuntu/shopping_buddy_flask/venv
+        requirements: /home/ubuntu/shopping_buddy_flask/requirements.txt
