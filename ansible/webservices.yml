@@ -1,0 +1,60 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: Ensure package for python virtual environment is installed
+      apt:
+        name: python3-venv
+        state: latest
+        update-cache: yes
+      become: yes
+
+    - name: Create Python virtual environment
+      command:
+        cmd: python3 -m venv /home/ubuntu/shopping_buddy_flask/venv
+        creates: "/home/ubuntu/shopping_buddy_flask/venv"
+
+    - name: Install Python packages from a requirements File
+      ansible.builtin.pip:
+        virtualenv: /home/ubuntu/shopping_buddy_flask/venv
+        requirements: /home/ubuntu/shopping_buddy_flask/requirements.txt
+
+    - name: Install gunicorn as a systemd service
+      copy:
+        src: gunicorn.service
+        dest: /etc/systemd/system/gunicorn.service
+
+    - name: Start gunicorn service
+      systemd:
+        name: gunicorn
+        state: started
+        enabled: yes
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: Start Nginx
+      service:
+        name: nginx
+        state: started
+
+    - name: Configure the nginx site
+      copy:
+        src: nginx.cfg
+        dest: /etc/nginx/sites-available/static_site.cfg
+
+    - name: Create symlink to sites-enabled
+      file:
+        src: /etc/nginx/sites-available/static_site.cfg
+        dest: /etc/nginx/sites-enabled/default
+        state: link
+
+    - name: Restart nginx service
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
