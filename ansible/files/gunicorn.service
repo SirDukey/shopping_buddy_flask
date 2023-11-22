@@ -1,0 +1,15 @@
+[Unit]
+Description=Shopping Buddy
+After=multi-user.target
+
+[Service]
+Type=idle
+WorkingDirectory=/home/ubuntu/shopping_buddy_flask
+ExecStart=/home/ubuntu/shopping_buddy_flask/venv/bin/gunicorn --bind 127.0.0.1:8000 appserver:gunicorn_app
+StandardError=journal
+StandardOutput=journal
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=mutli-user.target
