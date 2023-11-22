@@ -1,6 +1,13 @@
 ---
 - hosts: all
   tasks:
+    - name: Ensure package for python virtual environment is installed
+      apt:
+        name: python3-venv
+        state: latest
+        update-cache: yes
+      become: yes
+
     - name: Create Python virtual environment
       command:
         cmd: python3 -m venv /home/ubuntu/shopping_buddy_flask/venv
