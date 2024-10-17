@@ -11,11 +11,25 @@ Set environment variables `DEBUG` and `SECRET_KEY`
 
 The application can be run using various approaches:
 
+#### Local install
+Create a virtual environment for the app, install the requirements
+`python -m venv venv`
+`source ./venv/bin/activate`
+`pip install -r requirements.txt`
+
 1. Run application with `flask run`
 
 2. Run application with Gunicorn `gunicorn --bind 127.0.0.1:8000 appserver:gunicorn_app`
 
-3. Or deploy the application to a server with `nginx` and `gunicorn` (see the readme in the folder called **ansible**)
+Or...
+
+Using Docker `docker compose up -d`
+
+#### Server install
+
+1. Deploy the application to a server with `nginx` and `gunicorn` (see the readme in the folder called **ansible**)
+
+### Tests
 
 Run unit tests `pytest`
 
